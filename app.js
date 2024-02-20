@@ -72,7 +72,7 @@ app.post('/', async(req,resp)=>{
                 pass:"hmmdlqkubovnngdf"
             }
         }
-        const transporter= nodemailer.createTransport(option)
+        const transporter=await nodemailer.createTransport(option)
         
         const mailOption={
             to :email,
