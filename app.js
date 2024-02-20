@@ -72,6 +72,7 @@ app.use(express.json())
         transporter.sendMail(mailOption,(err,data)=>{
             if(err){
                 console.log(err)
+                
         
             }else{
                 console.log(data)
@@ -81,6 +82,7 @@ app.use(express.json())
        
    }else{
     console.log(data)
+    resp.json({msg:"failed"})
    }
    
        
