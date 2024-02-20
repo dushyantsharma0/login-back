@@ -9,7 +9,7 @@ const otpGenerator = require('otp-generator')
 const ejs=require('ejs')
 const path =require('path')
 port =process.env.PORT ||5000
-app.use(cors())
+
 
 app.set('view engine','ejs')
 
@@ -24,6 +24,7 @@ let firstname;
 let email;
 let password;
 let lastname;
+let tiger;
 
 app.get('/data', async(req,resp)=>{
     const {select}=req.query
@@ -38,11 +39,11 @@ app.get('/data', async(req,resp)=>{
     resp.send(data)
 })
 
-
+app.use(cors())
 app.use(express.json())
 app.post('/', async(req,resp)=>{
       let otp=req.body.otp
-      let tiger=req.body.tiger
+      
       console.log(tiger)
       console.log(newotp)
     
@@ -115,30 +116,7 @@ app.post('/', async(req,resp)=>{
  }
    
    
- if(tiger){
-    if(newotp===tiger){
-        let data= new loginModel({firstname,lastname,email,password})
-        let result =await data.save()
-        console.log(result)
-        resp.json({ msg:"registation successful "})
-        
-        //   let data=new loginModel({firstname,lastname,email,password})
-        // let result= await data.save()
-        // console.log(result)
-        // console.log(req.body)
-        // resp.json({ msg:"registation successful "})
-       
-        //     console.log('success')
-        // }else{
-        //     resp.json({msg:"incorrect otp"})
-        //     console.log('wrong otp')
-        // }
-    }
-    else{
-        console.log('wrong tiger')
-    }
 
-}
 
 
 
@@ -150,6 +128,33 @@ app.post('/', async(req,resp)=>{
 
    
    
+})
+app.post('/save', async(req,resp)=>{
+    tiger=req.body.tiger
+    if(tiger){
+        if(newotp===tiger){
+            let data= new loginModel({firstname,lastname,email,password})
+            let result =await data.save()
+            console.log(result)
+            resp.json({ msg:"registation successful "})
+    
+            //   let data=new loginModel({firstname,lastname,email,password})
+            // let result= await data.save()
+            // console.log(result)
+            // console.log(req.body)
+            // resp.json({ msg:"registation successful "})
+           
+            //     console.log('success')
+            // }else{
+            //     resp.json({msg:"incorrect otp"})
+            //     console.log('wrong otp')
+            // }
+        }
+        else{
+            console.log('wrong tiger')
+        }
+    
+    }
 })
 app.post('/login',async(req,resp)=>{
    const email=req.body.email
