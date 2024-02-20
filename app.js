@@ -63,7 +63,7 @@ app.post('/', async(req,resp)=>{
        
        
          newotp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false })
-         const option ={
+         const option={
             service:"gmail",
             port:"587",
             secure:false,
@@ -73,22 +73,37 @@ app.post('/', async(req,resp)=>{
             }
         }
         const transporter=await nodemailer.createTransport(option)
-             
+        
         const mailOption={
-            to:value,
+            to :email,
             from:"meammakerds@gmail.com",
-            subject: 'Sick leave',
-            html:`<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Document</title></head> <body> <p>dear ${firstname} </p><br><p>Thank You for registering with demo plateform.com the no1 demo site for checking demo</p> <br><br><p>Enter the below mentioned one time password to complete your regitration</p> <h1 style="font-weight: 900;">OTP:${newotp}</h1></body> </html>`
+            subject:`${newotp} is your OTP email verification on demo plateform`,
+               html:`<!DOCTYPE html>
+               <html lang="en">
+               <head>
+                   <meta charset="UTF-8">
+                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                   <title>Document</title>
+                  
+               </head>
+               <body>
+                   <p>dear ${firstname} </p><br>
+                   <p>Thank You for registering with demo plateform.com the no1 demo site for checking demo</p>
+                   <br><br>
+                   <p>Enter the below mentioned one time password to complete your regitration</p>
+                   <h1 style="font-weight: 900;">OTP:${newotp}</h1>
+               </body>
+               </html>`
         }
-        transporter.sendMail(mailOption,(err,data)=>{
+        
+     transporter.sendMail(mailOption,(err,data)=>{
             if(err){
                 console.log(err)
-        
             }else{
                 console.log(data)
             }
         })
-        
+        resp.json([{msg:"otp send successfully"},{otp:newotp}])
        }
     
       
