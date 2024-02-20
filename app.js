@@ -25,7 +25,9 @@ let email;
 let password;
 let lastname;
 let tiger;
-
+app.get('/',(req,resp)=>{
+    resp.send("hi i am live")
+})
 app.get('/data', async(req,resp)=>{
     const {select}=req.query
 //     const queryobject={}
