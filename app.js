@@ -45,40 +45,45 @@ app.use(cors())
 app.use(express.json())
 
    app.post('/', async(req,resp)=>{
-  let email=req.body.email
-    let data =loginModel.findOne({email})
-    if(data==null){
-        let newotp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
-        let firstname=req.body.firstname
-        
-        
-            const option ={
-                service:"gmail",
-                port:"587",
-                secure:false,
-                auth:{
-                    user:"meammakerds@gmail.com",
-                    pass:"hmmdlqkubovnngdf"
-                }
+  let emaill=req.body.email
+   let data=await loginModel.findOne({email:emaill})
+   if(data==null){
+    let newotp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
+    let firstname=req.body.firstname
+    
+    
+        const option ={
+            service:"gmail",
+            port:"587",
+            secure:false,
+            auth:{
+                user:"meammakerds@gmail.com",
+                pass:"hmmdlqkubovnngdf"
             }
-            const transporter=await nodemailer.createTransport(option)
-                 
-            const mailOption={
-                to:email,
-                from:"meammakerds@gmail.com",
-                subject: `${newotp} is your OTP email verification on demo plateform`,
-                html:`<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Document</title></head> <body> <p>dear ${firstname} </p><br><p>Thank You for registering with demo plateform.com the no1 demo site for checking demo</p> <br><br><p>Enter the below mentioned one time password to complete your regitration</p> <h1 style="font-weight: 900;">OTP:${newotp}</h1></body> </html>`
+        }
+        const transporter=await nodemailer.createTransport(option)
+             
+        const mailOption={
+            to:emaill,
+            from:"meammakerds@gmail.com",
+            subject: `${newotp} is your OTP email verification on demo plateform`,
+            html:`<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Document</title></head> <body> <p>dear ${firstname} </p><br><p>Thank You for registering with demo plateform.com the no1 demo site for checking demo</p> <br><br><p>Enter the below mentioned one time password to complete your regitration</p> <h1 style="font-weight: 900;">OTP:${newotp}</h1></body> </html>`
+        }
+        transporter.sendMail(mailOption,(err,data)=>{
+            if(err){
+                console.log(err)
+        
+            }else{
+                console.log(data)
+                resp.json({msg:"otp sent successfully!"})
             }
-            transporter.sendMail(mailOption,(err,data)=>{
-                if(err){
-                    console.log(err)
-            
-                }else{
-                    console.log(data)
-                    resp.json({msg:"otp sent successfully!"})
-                }
-            })
-    }
+        })
+       
+   }else{
+    console.log(data)
+   }
+   
+       
 
 
    })
