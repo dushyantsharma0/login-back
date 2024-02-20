@@ -96,14 +96,14 @@ app.post('/', async(req,resp)=>{
                </html>`
         }
         
-        transporter.sendMail(mailOption,(err,data)=>{
+       await transporter.sendMail(mailOption,(err,data)=>{
             if(err){
                 console.log(err)
             }else{
                 console.log(data)
             }
         })
-        resp.json([{msg:"otp send successfully"},{otp:newotp}])
+       await resp.json([{msg:"otp send successfully"},{otp:newotp}])
        }
     
       
