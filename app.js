@@ -55,13 +55,13 @@ app.post('/', async(req,resp)=>{
    if(req.body.email){
     let emaill=req.body.email
     let data=await loginModel.findOne({email:emaill})
-   
+    email=req.body.email
+    firstname=req.body.firstname
+    password=req.body.password
+    lastname=req.body.lastname
     if(data==null){
        
-        email=req.body.email
-        firstname=req.body.firstname
-        password=req.body.password
-        lastname=req.body.lastname
+       
          newotp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false })
          const option={
             service:"gmail",
@@ -116,15 +116,9 @@ app.post('/', async(req,resp)=>{
    
     
  }
+
    
- tiger=req.body.tiger
- if(tiger){
-         let data= new loginModel({firstname,lastname,email,password})
-         let result =await data.save()
-         console.log(result)
-         resp.json({ msg:"registation successful "})
- 
- }
+
 
 
 
@@ -139,8 +133,20 @@ app.post('/', async(req,resp)=>{
    
 })
 app.post('/save', async(req,resp)=>{
- 
-})
+    email=req.body.email
+    firstname=req.body.firstname
+    password=req.body.password
+    lastname=req.body.lastname
+    tiger=req.body.tiger
+    if(tiger){
+            let data= new loginModel({firstname,lastname,email,password})
+            let result =await data.save()
+            console.log(result)
+            resp.json({ msg:"registation successful "})
+    
+    }
+ })
+
 app.post('/login',async(req,resp)=>{
    const email=req.body.email
     const password=req.body.password
