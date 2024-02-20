@@ -75,7 +75,7 @@ app.use(express.json())
         
             }else{
                 console.log(data)
-                resp.json({msg:"otp sent successfully!"},{otp:newotp})
+                resp.json([{msg:"otp sent successfully!"},{otp:newotp}])
             }
         })
        
