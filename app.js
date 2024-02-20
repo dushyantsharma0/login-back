@@ -48,8 +48,8 @@ app.use(express.json())
   let email=req.body.email
     
 
-let newotp="5555"
-let firstname="aman"
+let newotp=otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
+let firstname=req.body.firstname
 
 
     const option ={
@@ -66,7 +66,7 @@ let firstname="aman"
     const mailOption={
         to:email,
         from:"meammakerds@gmail.com",
-        subject: 'Sick leave',
+        subject: `${newotp} is your OTP email verification on demo plateform`,
         html:`<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Document</title></head> <body> <p>dear ${firstname} </p><br><p>Thank You for registering with demo plateform.com the no1 demo site for checking demo</p> <br><br><p>Enter the below mentioned one time password to complete your regitration</p> <h1 style="font-weight: 900;">OTP:${newotp}</h1></body> </html>`
     }
     transporter.sendMail(mailOption,(err,data)=>{
@@ -75,6 +75,7 @@ let firstname="aman"
     
         }else{
             console.log(data)
+            resp.json({msg:"otp sent successfully!"})
         }
     })
    })
