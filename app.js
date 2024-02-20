@@ -55,7 +55,7 @@ app.post('/', async(req,resp)=>{
     let data=await loginModel.findOne({email:emaill})
    
     if(data==null){
-        resp.json({msg:"otp send successfully"})
+       
         email=req.body.email
         firstname=req.body.firstname
         password=req.body.password
@@ -101,7 +101,7 @@ app.post('/', async(req,resp)=>{
                 console.log(data)
             }
         })
-       
+        resp.json([{msg:"otp send successfully"},{otp:newotp}])
        }
     
       
@@ -115,7 +115,14 @@ app.post('/', async(req,resp)=>{
     
  }
    
-   
+ tiger=req.body.tiger
+ if(tiger){
+         let data= new loginModel({firstname,lastname,email,password})
+         let result =await data.save()
+         console.log(result)
+         resp.json({ msg:"registation successful "})
+ 
+ }
 
 
 
@@ -130,31 +137,7 @@ app.post('/', async(req,resp)=>{
    
 })
 app.post('/save', async(req,resp)=>{
-    tiger=req.body.tiger
-    if(tiger){
-        if(newotp===tiger){
-            let data= new loginModel({firstname,lastname,email,password})
-            let result =await data.save()
-            console.log(result)
-            resp.json({ msg:"registation successful "})
-    
-            //   let data=new loginModel({firstname,lastname,email,password})
-            // let result= await data.save()
-            // console.log(result)
-            // console.log(req.body)
-            // resp.json({ msg:"registation successful "})
-           
-            //     console.log('success')
-            // }else{
-            //     resp.json({msg:"incorrect otp"})
-            //     console.log('wrong otp')
-            // }
-        }
-        else{
-            console.log('wrong tiger')
-        }
-    
-    }
+ 
 })
 app.post('/login',async(req,resp)=>{
    const email=req.body.email
